@@ -39,29 +39,29 @@ poky/
 
 ### Config, layer and recipie
 ```
-                                                DISTRO 
-                                                ▲      
-                                                │      
-                    ┌──────────────────────────┐│      
-│---build/conf------│ bblayers.conf local.conf ┼┤      
-│                   └──────────────────────────┘│      
-│                                               │      
-│                                               ▼      
+                                                DISTRO
+                                                ▲
+                                                │
+                    ┌──────────────────────────┐│
+│---build/conf------│ bblayers.conf local.conf ┼┤
+│                   └──────────────────────────┘│
+│                                               │
+│                                               ▼
 │                   ┌──────────────┐            MACHINE
-│  xxxxxxx xxxxx    │              │                   
-│--xmeta-------x----│glibc_2.22.bb ┼───►RECIPES        
-│  x           x    │              │                   
-│  x           x    └──────────────┘                   
-│  x           x                                       
-│  x           x    ┌───────────┐                      
-│--xmeta-pocky-x----│tiny-int.bb│                      
-   xxxxxxxxxxxxx    └───────────┘                      
-         │                                             
-         └────► LAYERS                                      
+│  xxxxxxx xxxxx    │              │
+│--xmeta-------x----│glibc_2.22.bb ┼───►RECIPES
+│  x           x    │              │
+│  x           x    └──────────────┘
+│  x           x
+│  x           x    ┌───────────┐
+│--xmeta-pocky-x----│tiny-int.bb│
+   xxxxxxxxxxxxx    └───────────┘
+         │
+         └────► LAYERS
 ```
 
 - Distro: how i want to put my system together
-- Machine: the board i want to build for 
+- Machine: the board i want to build for
 - Images: the selection of packages i want
 
 ### Distro
@@ -97,7 +97,7 @@ poky/
 ### Building an image
 
 - to build image, simply run BitBake and the image name
-  - genearally, to build any recipe, give it as a parameter to BitBake 
+  - genearally, to build any recipe, give it as a parameter to BitBake
 - `bitbake core-image-minimal` (example if we want to use core-image-minimal)
 
 **NOTE**: this will take a lot of time.
@@ -148,9 +148,9 @@ poky/
 
 **NOTE**: this part is usually not required to be edited
 
-### Shared state cache 
+### Shared state cache
 
-- Binary build artifacts are put into the shared state chache 
+- Binary build artifacts are put into the shared state chache
   - speeds up subsequent build
   - can be shared with other developers
 - When running BitBake, you will notice
@@ -224,7 +224,7 @@ then after that we need to call `bitbake core-image-base` (base core image).
 
 ### Recipes
 
-- Contains instructions on how to fetch, configure, compile and install a software component 
+- Contains instructions on how to fetch, configure, compile and install a software component
 - The body contains BitBake metadata (assignment of variables, mostly); the tasks are written in shell script or Python
 - Recipe files have suffix `.bb`
 - May be extended with append recipies with `.bbappend` suffix
@@ -265,7 +265,7 @@ SRC_URI = "file://helloworld.c"
 S = "${WORKDIR}"
 
 # Compile hello world
-do_compile() { 
+do_compile() {
     ${CC} ${LDFLAGS} helloworld.c -o helloworld
 }
 
@@ -296,7 +296,7 @@ ls libz*
 
 #### Adding a custom recipe
 
-- Need to createa a layer first, createa a custom layer 
+- Need to createa a layer first, createa a custom layer
   - `bitbake-layers create-layer ../meta-example`
   - Add layer using `bitbake-layers add-layer ../meta-example`
 
@@ -320,7 +320,55 @@ Directory structure of the custom layer
     |-- helloworld_1.0.bb
 ```
 
+## BUILDING THE SDK
+
+**NOTE**: not sure as to what this does but it does start the process of downloading some dependencies that are realated
+  to QEMU and it is the only reason that I am going to be running this command for the QEMU emulation process
+
+```bitbake <name-of-image> -c populate_sdk```
+
+# QEMU SETUP
+
+## QEMU command to start emulation
+
+```bash
+qemu-system-aarch64 -M virt -m 1024 -nographic \
+-kernel /path/to/Image-smarc-rzv2l.bin \
+-dtb /path/to/r9a07g054l2-smarc.dtb \
+-append "root=/dev/vda rw console=ttyAMA0" \
+-drive file=/path/to/rootfs.ext4,if=virtio,format=raw
+```
+
+
+```bash
+qemu-system-arm \
+    -M versatilepb \  # or the appropriate machine type for your BSP
+    -m 512 \          # specify the amount of RAM
+    -kernel /path/to/Image \  # path to your kernel image
+    -dtb /path/to/r9a07g054l2-smarc.dtb \  # path to your DTB file
+    -drive file=/path/to/core-image-minimal-smarc-rzv2l-<timestamp>.rootfs.ext4,format=raw,if=virtio \  # path to your root filesystem
+    -append "root=/dev/vda rw console=ttyAMA0" \  # kernel command line parameters
+    -nographic \      # run in non-graphical mode (optional)
+```
+
+```bash
+qemu-system-aarch64 \
+    -M virt \
+    -m 2048 \
+    -kernel /home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin \
+    -dtb /home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/Image-r9a07g054l2-smarc.dtb \
+    -drive file=/home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/core-image-minimal-smarc-rzv2l.ext4,format=raw,if=virtio \
+    -append "root=/dev/vda rw console=ttyAMA0" \
+    -nographic
+```
+
+**These are the following steps that are used for**
+sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin /media/pirllabs/09F7-5104
+sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/r9a07g054l2-smarc.dtb /media/pirllabs/09F7-5104
+cd /mnt/rootfs
+sudo tar jxvf /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/core-image-weston-smarc-rzv2l.tar.bz2
+sync
 
 # LINKS AND OTHER USEFULL SOURCES:
-- https://github.com/renesas-rz/meta-renesas (Info on how on dependencies for yocto project on the renesas board)
+- https://github.com/renesas-rz/meta-renesdoes tas (Info on how on dependencies for yocto project on the renesas board)
 - https://github.com/renesas-rz/rzv2h_drp-ai_driver (Link to the DRPAI drivers sometime it is required for the video codec processing)
