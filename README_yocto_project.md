@@ -362,7 +362,8 @@ qemu-system-aarch64 \
     -nographic
 ```
 
-**These are the following steps that are used for**
+
+**These are the following steps that are used for burning in the images into the sd card**
 sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin /media/pirllabs/09F7-5104
 sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/r9a07g054l2-smarc.dtb /media/pirllabs/09F7-5104
 cd /mnt/rootfs
@@ -372,3 +373,7 @@ sync
 # LINKS AND OTHER USEFULL SOURCES:
 - https://github.com/renesas-rz/meta-renesdoes tas (Info on how on dependencies for yocto project on the renesas board)
 - https://github.com/renesas-rz/rzv2h_drp-ai_driver (Link to the DRPAI drivers sometime it is required for the video codec processing)
+
+
+# FUTURE DEVELOPMENT LINKS
+- https://sebastienbourdelin.com/2021/06/16/writing-a-custom-device-for-qemu/ (for qemu emulation)
