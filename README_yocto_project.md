@@ -354,12 +354,25 @@ qemu-system-arm \
 ```bash
 qemu-system-aarch64 \
     -M virt \
-    -m 2048 \
+    -m 2G \
     -kernel /home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin \
     -dtb /home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/Image-r9a07g054l2-smarc.dtb \
-    -drive file=/home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/core-image-minimal-smarc-rzv2l.ext4,format=raw,if=virtio \
+    -drive file=/home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/core-image-minimal-smarc-rzv2l-20240813062831.rootfs.ext4,format=raw,if=virtio  \
     -append "root=/dev/vda rw console=ttyAMA0" \
-    -nographic
+    -serial pty
+``` 
+
+Minimal option
+
+```bash
+qemu-system-aarch64 \
+    -M virt \
+    -m 2048 \
+    -kernel /home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin \
+    -drive file=/home/rahul/workspace/yocto-rzv2l/build/tmp/deploy/images/smarc-rzv2l/core-image-minimal-smarc-rzv2l.ext4,format=raw,if=virtio \
+    -append "root=/dev/vda rw console=ttyAMA0 debug earlyprintk" \
+    -nographic \
+    -serial pty
 ```
 
 **These are the following steps that are used for**
@@ -370,5 +383,9 @@ sudo tar jxvf /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images
 sync
 
 # LINKS AND OTHER USEFULL SOURCES:
-- https://github.com/renesas-rz/meta-renesdoes tas (Info on how on dependencies for yocto project on the renesas board)
+- https://github.com/renesas-rz/meta-renesas tas (Info on how on dependencies for yocto project on the renesas board)
 - https://github.com/renesas-rz/rzv2h_drp-ai_driver (Link to the DRPAI drivers sometime it is required for the video codec processing)
+
+
+# FUTURE DEVELOPMENT LINKS
+- https://sebastienbourdelin.com/2021/06/16/writing-a-custom-device-for-qemu/ (for qemu emulation)

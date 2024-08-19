@@ -8,7 +8,6 @@ pyshtables.py
 pstage/
 scripts/oe-git-proxy-socks
 sources/
-meta-*/
 buildtools/
 !meta-skeleton
 !meta-selftest
@@ -22,6 +21,7 @@ hob-image-*.bb
 !meta-yocto-bsp
 !meta-yocto-imported
 !meta-rz-dependency
+!meta-openembedded
 /documentation/*/eclipse/
 /documentation/*/*.html
 /documentation/*/*.pdf
