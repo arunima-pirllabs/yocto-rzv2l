@@ -9,6 +9,7 @@ pstage/
 scripts/oe-git-proxy-socks
 sources/
 buildtools/
+meta-/
 !meta-skeleton
 !meta-selftest
 hob-image-*.bb
