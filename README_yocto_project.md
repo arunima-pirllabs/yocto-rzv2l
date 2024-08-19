@@ -375,7 +375,8 @@ qemu-system-aarch64 \
     -serial pty
 ```
 
-**These are the following steps that are used for**
+
+**These are the following steps that are used for burning in the images into the sd card**
 sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/Image-smarc-rzv2l.bin /media/pirllabs/09F7-5104
 sudo cp /home/pirllabs/Renesas/6thEnergy-RZV2L-304/build/tmp/deploy/images/smarc-rzv2l/r9a07g054l2-smarc.dtb /media/pirllabs/09F7-5104
 cd /mnt/rootfs
