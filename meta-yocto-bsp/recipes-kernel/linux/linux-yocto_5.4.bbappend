@@ -21,3 +21,7 @@ LINUX_VERSION_genericx86 = "5.4.219"
 LINUX_VERSION_genericx86-64 = "5.4.219"
 LINUX_VERSION_edgerouter = "5.4.58"
 LINUX_VERSION_beaglebone-yocto = "5.4.58"
+
+SRC_URI_append = "file://defconfig"
+
+KCONFIG_MODE = "alldefconfig"
